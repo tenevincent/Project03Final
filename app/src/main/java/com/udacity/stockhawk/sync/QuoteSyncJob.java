@@ -49,7 +49,11 @@ public final class QuoteSyncJob {
         // https://github.com/appsthatmatter/GraphView#
         // http://www.android-graphview.org/
         // plotting over time, see below!!
-        // http://www.android-graphview.org/dates-as-labels/
+        // http://www.android-graphview.org/dates-as-labels
+
+        // symbols
+        // http://www.marketwatch.com/tools/screener?exchange=15&view=8&lookup=Look+Up&dist=afterbell
+
 
 
         Timber.d("Running sync job");
