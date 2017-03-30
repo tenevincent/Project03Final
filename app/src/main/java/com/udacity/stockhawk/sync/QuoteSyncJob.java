@@ -44,6 +44,14 @@ public final class QuoteSyncJob {
 
     static void getQuotes(Context context) {
 
+        // TODO
+        // https://discussions.udacity.com/t/stock-hawk-to-graph-the-stocks-value-over-time/219384/2
+        // https://github.com/appsthatmatter/GraphView#
+        // http://www.android-graphview.org/
+        // plotting over time, see below!!
+        // http://www.android-graphview.org/dates-as-labels/
+
+
         Timber.d("Running sync job");
 
         Calendar from = Calendar.getInstance();
