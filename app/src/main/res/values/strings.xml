@@ -31,5 +31,7 @@
     <string translatable="true" name="toast_stock_added_no_connectivity">Symbol %s added. Will refresh when network available.</string>
     <string translatable="true" name="toast_no_connectivity">Will refresh when network available.</string>
     <string translatable="true" name="str_error_stock_name">The given stock short name does not exist. Please enter a valid stock name!</string>
+    <string name="str_error_message">Error message</string>
+    <string name="str_google_text">GOOG</string>
 
 </resources>

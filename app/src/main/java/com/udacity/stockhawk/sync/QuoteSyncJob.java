@@ -77,11 +77,17 @@ public final class QuoteSyncJob {
                 Stock stock = quotes.get(symbol);
 
                 if(null == stock || null ==  stock.getQuote() ){
+                    PrefUtils.removeStock(context,symbol); // remove the invalid symbol added by the user
+                    Toast.makeText(context,"The item " + symbol + " has been removed!", Toast.LENGTH_LONG).show();
                     continue;
                 }
                 StockQuote quote = stock.getQuote();
 
+                // vtene: check if the quote is not null!
                 if(null == quote.getPrice() || null ==  quote.getChange() || null == quote.getChangeInPercent() ){
+
+                    PrefUtils.removeStock(context,symbol); // remove the invalid symbol added by the user
+                    Toast.makeText(context,"The item " + symbol + " has been removed!", Toast.LENGTH_LONG).show();
                     continue;
                 }
 
@@ -165,10 +171,7 @@ public final class QuoteSyncJob {
 
             JobInfo.Builder builder = new JobInfo.Builder(ONE_OFF_ID, new ComponentName(context, QuoteJobService.class));
 
-
-            builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                    .setBackoffCriteria(INITIAL_BACKOFF, JobInfo.BACKOFF_POLICY_EXPONENTIAL);
-
+            builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY).setBackoffCriteria(INITIAL_BACKOFF, JobInfo.BACKOFF_POLICY_EXPONENTIAL);
 
             JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
