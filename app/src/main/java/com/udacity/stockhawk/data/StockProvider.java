@@ -40,7 +40,8 @@ public class StockProvider extends ContentProvider {
         Cursor returnCursor;
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        switch (uriMatcher.match(uri)) {
+        int _matcher = uriMatcher.match(uri) ;
+        switch (_matcher) {
             case QUOTE:
                 returnCursor = db.query(
                         Contract.Quote.TABLE_NAME,

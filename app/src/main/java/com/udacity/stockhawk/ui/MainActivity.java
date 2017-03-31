@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         StockAdapter.StockAdapterOnClickHandler {
 
     private static final int STOCK_LOADER = 0;
+    public static final String SYMBOL_KEYWORD = "symbolKeyWord";
+
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.recycler_view)
     RecyclerView stockRecyclerView;
@@ -48,14 +50,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onClick(String symbol) {
 
-
         Timber.d("Symbol clicked: %s", symbol);
 
         Intent intent = new Intent("com.udacity.stockhawk.ui.StockDetailsOverTimeActivity");
+        Bundle mBundle = new Bundle();
+        mBundle.putString(MainActivity.SYMBOL_KEYWORD, symbol);
+        intent.putExtras(mBundle);
+
         startActivity(intent);
-
-
-
     }
 
     @Override
@@ -72,8 +74,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
         onRefresh();
-
-
 
         QuoteSyncJob.initialize(this);
         getSupportLoaderManager().initLoader(STOCK_LOADER, null, this);

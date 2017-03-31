@@ -46,13 +46,11 @@ public final class QuoteSyncJob {
 
         // TODO
         // https://discussions.udacity.com/t/stock-hawk-to-graph-the-stocks-value-over-time/219384/2
-        // https://github.com/appsthatmatter/GraphView#
-        // http://www.android-graphview.org/
-        // plotting over time, see below!!
-        // http://www.android-graphview.org/dates-as-labels
-
+        // https://github.com/PhilJay/MPAndroidChart/wiki/YAxis
         // symbols
         // http://www.marketwatch.com/tools/screener?exchange=15&view=8&lookup=Look+Up&dist=afterbell
+
+        // https://github.com/PhilJay/MPAndroidChart/blob/4cb83a7b915628204131485fee156a873a216cde/MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartTime.java
 
 
 
@@ -126,12 +124,10 @@ public final class QuoteSyncJob {
                 quoteCV.put(Contract.Quote.COLUMN_PERCENTAGE_CHANGE, percentChange);
                 quoteCV.put(Contract.Quote.COLUMN_ABSOLUTE_CHANGE, change);
 
-
                 quoteCV.put(Contract.Quote.COLUMN_HISTORY, historyBuilder.toString());
-
                 quoteCVs.add(quoteCV);
 
-            }
+              }
 
             context.getContentResolver()
                     .bulkInsert(
