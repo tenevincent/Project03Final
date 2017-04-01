@@ -24,7 +24,9 @@ import com.udacity.stockhawk.data.StockData;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -34,7 +36,7 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
     private static final int TASK_LOADER_ID = 20 ;
     private  String mCurrentSymbolKey = null;
     private LineChart lineChart ;
-
+    private Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,56 +48,34 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
         }
         setActivityTitle();
 
+        CreateLineChartAndSetProperties();
 
+        getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
+    }
 
-
+    private void CreateLineChartAndSetProperties() {
         lineChart = (LineChart) findViewById(R.id.chart);
         // Y-Right Axis
         lineChart.setDrawBorders(true); // enable the chart border
         lineChart.setPinchZoom(true);
+
         lineChart.setDrawGridBackground(false);
         lineChart.setBorderColor(Color.WHITE);
-
         // Right Axis
         lineChart.getAxisRight().setEnabled(true);
         lineChart.getAxisRight().setDrawLabels(false);
         lineChart.getAxisLeft().setEnabled(true);
-
         // Sets the legend properties
         lineChart.getLegend().setTextColor(Color.WHITE);
         lineChart.getLegend().setTextSize(11f);
         lineChart.getDescription().setEnabled(false); // chart description disable!
 
-
-        // lineChart.setGridBackgroundColor(Color.BLUE);
-        /*
-
-         Ensure a loader is initialized and active. If the loader doesn't already exist, one is
-
-         created, otherwise the last created loader is re-used.
-
-         */
-
-
-
-
-
-
-
-
-
-
-
-
         YAxis yAxis = lineChart.getAxisLeft();
-       // yAxis.setPosition(YAxis.YAxisLabelPosition.LE);
+        // yAxis.setPosition(YAxis.YAxisLabelPosition.LE);
         yAxis.setTextSize(16f);
         yAxis.setTextColor(Color.WHITE);
         yAxis.setDrawAxisLine(true);
         yAxis.setDrawGridLines(true);
-
-
-        getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
     }
 
     @Override
@@ -105,9 +85,8 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
         getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
     }
 
-
     private void setActivityTitle() {
-        String title = mCurrentSymbolKey + getString(R.string.str_stock_over_datetime);
+        String title = mCurrentSymbolKey + " " + getString(R.string.str_stock_over_datetime);
         ActionBar actionbar = this.getSupportActionBar();
         // sets the actionbar
         if(null != actionbar){
@@ -115,10 +94,8 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
         }
     }
 
-    private Cursor cursor;
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
 
         return new AsyncTaskLoader<Cursor>(this) {
 
@@ -151,13 +128,11 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
                 }
             }
 
-
             // deliverResult sends the result of the load, a Cursor, to the registered listener
             public void deliverResult(Cursor data) {
                 mTaskData = data;
                 super.deliverResult(data);
             }
-
         };
 
     }
@@ -167,39 +142,32 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
 
         while (data.moveToNext()) {
 
-            String years = data.getString(data.getColumnIndex(Contract.Quote.COLUMN_HISTORY));
+            String stockrowData = data.getString(data.getColumnIndex(Contract.Quote.COLUMN_HISTORY));
+            String[] array = stockrowData.split("\n", -1);
 
-
-            String[] array = years.split("\n", -1);
+            ArrayList<String> tempElements = new ArrayList<String>(Arrays.asList(array));
+            Collections.reverse(tempElements);
 
             StockData[] dataObjects = new StockData[array.length];
 
-            for (int i = 0; i < array.length; i++){
+            for (int i = 0; i < tempElements.size(); i++){
 
-                String strItem = array[i];
+                String strItem = tempElements.get(i);
                 String[] arrayItem = strItem.split(",", -1);
 
                 if(arrayItem.length < 2){
                     continue;
                 }
 
-
-
-                 long xpoint1 = Long.parseLong(arrayItem[0]) ;
+                long xpoint1 = Long.parseLong(arrayItem[0]) ;
                 float ypoint1 = Float.parseFloat(arrayItem[1]) ;
 
                 StockData stdata = new StockData(xpoint1,ypoint1) ;
-                stdata.setIndex(i);
+                stdata.setIndex(i); // save the data index
                 dataObjects[i] = stdata;
             }
 
-
-
-
-
             DoPlotStockHawkData(dataObjects);
-
-
         }
     }
 
@@ -208,17 +176,14 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
 
     }
 
-
+    /** Display the stock value data over time
+     *
+     * @param dataObjects Collection of stock values
+     */
     private void DoPlotStockHawkData(StockData[] dataObjects) {
 
-
-
         List<String> values = new ArrayList<>() ;
-
-
-
         List<Entry> entries = new ArrayList<Entry>();
-        // fill the entries
 
         int index = 0;
         for (StockData data : dataObjects) {
@@ -227,32 +192,26 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
             }
             entries.add(new Entry(data.getIndex(), data.getValueY()));
 
-            //  if(index % 2 == 0){
+            Date datetime = new Date(data.getValueX());
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(datetime);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String date = sdf.format(datetime);
+            values.add(date);
 
-                Date datetime = new Date(data.getValueX());
-                Calendar calendar = new GregorianCalendar();
-                calendar.setTime(datetime);
-
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-                String date = sdf.format(datetime);
-                values.add(date);
-
-         //   }
             index++;
         }
 
-        LineDataSet dataSet = new LineDataSet(entries, mCurrentSymbolKey + "Stock Value"); // add entries to dataset
+        LineDataSet dataSet = new LineDataSet(entries, mCurrentSymbolKey + " " + getString(R.string.str_stock_value)); // add entries to dataset
         dataSet.setColor(Color.WHITE);
         dataSet.setValueTextColor(Color.WHITE); // styling, ...
         dataSet.setLineWidth(1f);
         dataSet.setValueTextSize(12f) ;
 
-
         LineData lineData = new LineData(dataSet);
         lineData.setValueTextColor(Color.WHITE);
         lineChart.setData(lineData);
         lineChart.invalidate(); // refresh
-
 
         //
         XAxis xAxis = lineChart.getXAxis();
@@ -262,38 +221,13 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(true);
 
-
-
         String [] astrArray = new String[values.size()];
         for (int i =0; i <values.size() ; i++ ){
             astrArray[i] = values.get(i);
         }
-
         //display dates
         xAxis = lineChart.getXAxis();
         xAxis.setValueFormatter(new CustomValueFormatter(astrArray));
-
-
-        //axis formatter that refers to the LABELS array to put down nice x axis labels
-
-        /*
-        IAxisValueFormatter axisValueFormatter = new IAxisValueFormatter() {
-            //trying to put in logic to only put labels in certain intervals
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                int date_num = (int) value;
-                Date date = labels.get(date_num);
-                return sdf.format(date);
-            }
-        };
-        XAxis xaxis = lineChart.getXAxis();
-        xaxis.setValueFormatter(axisValueFormatter);
-
-        */
-
-
     }
-
-
 
 }

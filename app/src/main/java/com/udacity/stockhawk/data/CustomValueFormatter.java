@@ -13,10 +13,18 @@ public class CustomValueFormatter implements IAxisValueFormatter {
         this.mValues = values;
     }
 
-
-
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        return mValues[(int) value];
+        String format = "";
+        try{
+            int index = (int) value ;
+            if(index % 2 != 0){
+                return "";
+            }
+            format = mValues[index];
+        }catch (Exception ex){
+        }
+       return format;
+
     }
 }

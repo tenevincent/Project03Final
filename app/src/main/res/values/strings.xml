@@ -33,6 +33,9 @@
     <string name="str_error_stock_name" translatable="true">The given stock short name does not exist. Please enter a valid stock name!</string>
     <string name="str_error_message">Error message</string>
     <string name="str_google_text">GOOG</string>
-    <string name="str_stock_over_datetime">Stock´s Value over Time</string>
+    <string name="str_stock_over_datetime">Historical Stock Quote Prices </string>
+    <string name="str_stock_value">Stock Values</string>
+    <string name="str_text_price">1000.00</string>
+    <string name="add_stock">Add a new Stock</string>
 
 </resources>

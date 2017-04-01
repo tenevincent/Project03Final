@@ -105,6 +105,12 @@ public final class QuoteSyncJob {
                 float change = quote.getChange().floatValue();
                 float percentChange = quote.getChangeInPercent().floatValue();
 
+               boolean isexist =  stock.getHistory().isEmpty() ;
+                // if no stock exist continue
+                if(isexist){
+                    continue;
+                }
+
                 // WARNING! Don't request historical data for a stock that doesn't exist!
                 // The request will hang forever X_x
                 List<HistoricalQuote> history = stock.getHistory(from, to, Interval.WEEKLY);
