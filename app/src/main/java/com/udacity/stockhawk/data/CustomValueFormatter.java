@@ -17,7 +17,7 @@ public class CustomValueFormatter implements IAxisValueFormatter {
     public String getFormattedValue(float value, AxisBase axis) {
         String format = "";
         try{
-            int index = (int) value ;
+            int index = (int) value ; // skip each even index
             if(index % 2 != 0){
                 return "";
             }

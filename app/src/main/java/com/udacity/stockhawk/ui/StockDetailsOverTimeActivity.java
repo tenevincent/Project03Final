@@ -53,6 +53,10 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
         getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
     }
 
+
+    /** Sets the line chart properties
+     *
+     */
     private void CreateLineChartAndSetProperties() {
         lineChart = (LineChart) findViewById(R.id.chart);
         // Y-Right Axis

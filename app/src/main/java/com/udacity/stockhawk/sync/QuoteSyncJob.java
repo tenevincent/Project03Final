@@ -43,17 +43,7 @@ public final class QuoteSyncJob {
     }
 
     static void getQuotes(Context context) {
-
-        // TODO
-        // https://discussions.udacity.com/t/stock-hawk-to-graph-the-stocks-value-over-time/219384/2
-        // https://github.com/PhilJay/MPAndroidChart/wiki/YAxis
-        // symbols
-        // http://www.marketwatch.com/tools/screener?exchange=15&view=8&lookup=Look+Up&dist=afterbell
-
-        // https://github.com/PhilJay/MPAndroidChart/blob/4cb83a7b915628204131485fee156a873a216cde/MPChartExample/src/com/xxmassdeveloper/mpchartexample/LineChartTime.java
-
-
-
+        
         Timber.d("Running sync job");
 
         Calendar from = Calendar.getInstance();
