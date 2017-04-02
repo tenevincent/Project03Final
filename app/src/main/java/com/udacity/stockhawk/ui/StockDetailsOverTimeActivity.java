@@ -199,7 +199,7 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
             Date datetime = new Date(data.getValueX());
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(datetime);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.str_datetime_format));
             String date = sdf.format(datetime);
             values.add(date);
 

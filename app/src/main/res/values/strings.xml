@@ -25,17 +25,29 @@
     <string name="dialog_cancel" translatable="true">Cancel</string>
     <string name="dialog_add" translatable="true">Add</string>
 
+
     <string name="error_no_network" translatable="true">No network connectivity! Will load stock cursor when the network is available.</string>
     <string name="error_no_stocks" translatable="true">No stocks added! Hit the floating action button to add one.</string>
-
     <string name="toast_stock_added_no_connectivity" translatable="true">Symbol %s added. Will refresh when network available.</string>
     <string name="toast_no_connectivity" translatable="true">Will refresh when network available.</string>
     <string name="str_error_stock_name" translatable="true">The given stock short name does not exist. Please enter a valid stock name!</string>
-    <string name="str_error_message">Error message</string>
-    <string name="str_google_text">GOOG</string>
-    <string name="str_stock_over_datetime">Stock´s Values over Time </string>
-    <string name="str_stock_value">Stock Values</string>
-    <string name="str_text_price">1000.00</string>
-    <string name="add_stock">Add a new Stock</string>
+    <string name="str_error_message" translatable="true">Error message</string>
+
+
+    <string name="str_stock_over_datetime" translatable="true">  translatable="true"Stock´s Values over Time </string>
+    <string name="str_stock_value" translatable="true">Stock Values</string>
+    <string name="add_stock" translatable="true">Add a new Stock</string>
+    <string name="str_unknown_uri" translatable="true">Unknown URI:</string>
+    <string name="str_intent_handled" translatable="true">Intent handled</string>
+    <string name="str_symbol_clicked" translatable="true">Symbol clicked: %s</string>
+
+
+    <string name="str_error_stock_quotes" translatable="false">Error fetching stock quotes</string>
+    <string name="str_google_text" translatable="false">GOOG</string>
+    <string name="str_text_price" translatable="false">1000.00</string>
+    <string name="stock_dialog_fragment" translatable="false">StockDialogFragment</string>
+    <string name="str_datetime_format" translatable="false">dd/MM/yyyy</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

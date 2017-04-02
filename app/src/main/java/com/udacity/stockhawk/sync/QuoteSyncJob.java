@@ -43,7 +43,7 @@ public final class QuoteSyncJob {
     }
 
     static void getQuotes(Context context) {
-        
+
         Timber.d("Running sync job");
 
         Calendar from = Calendar.getInstance();
@@ -78,7 +78,7 @@ public final class QuoteSyncJob {
 
                 if(null == stock || null ==  stock.getQuote() ){
                     PrefUtils.removeStock(context,symbol); // remove the invalid symbol added by the user
-                    Toast.makeText(context,"The item " + symbol + " has been removed!", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(context,"The item " + symbol + " has been removed!", Toast.LENGTH_LONG).show();
                     continue;
                 }
                 StockQuote quote = stock.getQuote();
@@ -87,7 +87,7 @@ public final class QuoteSyncJob {
                 if(null == quote.getPrice() || null ==  quote.getChange() || null == quote.getChangeInPercent() ){
 
                     PrefUtils.removeStock(context,symbol); // remove the invalid symbol added by the user
-                    Toast.makeText(context,"The item " + symbol + " has been removed!", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(context,"The item " + symbol + " has been removed!", Toast.LENGTH_LONG).show();
                     continue;
                 }
 
@@ -134,7 +134,7 @@ public final class QuoteSyncJob {
             context.sendBroadcast(dataUpdatedIntent);
 
         } catch (IOException exception) {
-            Timber.e(exception, "Error fetching stock quotes");
+            Timber.e(exception, context.getString(R.string.str_error_stock_quotes));
         }
     }
 
