@@ -155,7 +155,6 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
             StockData[] dataObjects = new StockData[array.length];
 
             for (int i = 0; i < tempElements.size(); i++){
-
                 String strItem = tempElements.get(i);
                 String[] arrayItem = strItem.split(",", -1);
 

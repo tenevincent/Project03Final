@@ -21,8 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.udacity.stockhawk.R;
+import com.udacity.stockhawk.StockHawkApp;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
+import com.udacity.stockhawk.data.WidgetItem;
 import com.udacity.stockhawk.sync.QuoteSyncJob;
 
 import butterknife.BindView;
@@ -158,6 +160,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             error.setVisibility(View.GONE);
         }
         adapter.setCursor(data);
+        //
+        fillWidgetItems(data);
+
+    }
+
+
+
+    private void fillWidgetItems(Cursor data) {
+        StockHawkApp stockHawkApp = (StockHawkApp)this.getApplicationContext() ;
+        while (data.moveToNext()) {
+            String symbol = data.getString(Contract.Quote.POSITION_SYMBOL) ;
+            String price = data.getString(Contract.Quote.POSITION_PRICE) ;
+            String changepers = data.getString(Contract.Quote.POSITION_PERCENTAGE_CHANGE) ;
+            String changeabs = data.getString(Contract.Quote.POSITION_ABSOLUTE_CHANGE) ;
+            WidgetItem item = new WidgetItem(symbol,price,changepers,changeabs);
+            stockHawkApp.getListItemList().add(item) ;
+        }
     }
 
 

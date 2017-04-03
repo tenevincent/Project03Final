@@ -49,5 +49,6 @@
     <string name="str_datetime_format" translatable="false">dd/MM/yyyy</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="empty_string">empty string</string>
 
 </resources>
