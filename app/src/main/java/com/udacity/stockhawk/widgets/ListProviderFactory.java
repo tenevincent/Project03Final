@@ -5,6 +5,8 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
@@ -68,13 +70,29 @@ public class ListProviderFactory implements RemoteViewsFactory {
     @Override
     public RemoteViews getViewAt(int position) {
 
-       final RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.list_widget_row);
+           final RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.list_widget_row);
 
         WidgetItem listItem = listItemList.get(position);
 
+
         remoteView.setTextViewText(R.id.symbol_widget,listItem.getSymbol());
+        remoteView.setTextColor(R.id.price_widget, Color.WHITE);
+
         remoteView.setTextViewText(R.id.price_widget, listItem.getPrice());
-        remoteView.setTextViewText(R.id.change_widget, listItem.getPrice());
+        remoteView.setTextColor(R.id.price_widget, Color.WHITE);
+
+        remoteView.setTextViewText(R.id.change_widget, listItem.getChangePercentage());
+
+        
+        float rawAbsoluteChange = Float.parseFloat(listItem.getChangeAbsolute());
+
+        if (rawAbsoluteChange > 0) {
+            remoteView.setTextColor(R.id.change_widget, Color.GREEN);
+        } else {
+            remoteView.setTextColor(R.id.change_widget, Color.RED);
+        }
+
+        //  float percentageChange = cursor.getFloat(Contract.Quote.POSITION_PERCENTAGE_CHANGE);
 
         return remoteView;
     }
