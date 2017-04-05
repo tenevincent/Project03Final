@@ -50,5 +50,6 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="empty_string">empty string</string>
+    <string name="stock_hawk_app">Stock Hawk</string>
 
 </resources>

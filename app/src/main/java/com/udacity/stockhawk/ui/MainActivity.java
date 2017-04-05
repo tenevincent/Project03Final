@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Timber.d(getString(R.string.str_symbol_clicked), symbol);
 
-        Intent intent = new Intent("com.udacity.stockhawk.ui.StockDetailsOverTimeActivity");
+        Intent intent = new Intent("com.udacity.stockhawk.ui.StockDetailsActivity");
         Bundle mBundle = new Bundle();
         mBundle.putString(MainActivity.SYMBOL_KEYWORD, symbol);
         intent.putExtras(mBundle);
@@ -163,20 +163,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //
         fillWidgetItems(data);
 
+
+        StockHawkApp stockHawkApp = (StockHawkApp)this.getApplicationContext() ;
+        stockHawkApp.fillCursorWithStockData(data);
+
     }
 
 
 
     private void fillWidgetItems(Cursor data) {
+
         StockHawkApp stockHawkApp = (StockHawkApp)this.getApplicationContext() ;
-        while (data.moveToNext()) {
-            String symbol = data.getString(Contract.Quote.POSITION_SYMBOL) ;
-            String price = data.getString(Contract.Quote.POSITION_PRICE) ;
-            String changepers = data.getString(Contract.Quote.POSITION_PERCENTAGE_CHANGE) ;
-            String changeabs = data.getString(Contract.Quote.POSITION_ABSOLUTE_CHANGE) ;
-            WidgetItem item = new WidgetItem(symbol,price,changepers,changeabs);
-            stockHawkApp.getListItemList().add(item) ;
-        }
+        stockHawkApp.fillCursorWithStockData(data);
+
+
     }
 
 

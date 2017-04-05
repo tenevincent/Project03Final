@@ -70,15 +70,7 @@ public class StockLoderCallbackAsync implements LoaderManager.LoaderCallbacks<Cu
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         StockHawkApp stockHawkApp = (StockHawkApp)currentContext.getApplicationContext() ;
-        while (data.moveToNext()) {
-            String symbol = data.getString(Contract.Quote.POSITION_SYMBOL) ;
-            String price = data.getString(Contract.Quote.POSITION_PRICE) ;
-            String changepers = data.getString(Contract.Quote.POSITION_PERCENTAGE_CHANGE) ;
-            String changeabs = data.getString(Contract.Quote.POSITION_ABSOLUTE_CHANGE) ;
-            WidgetItem item = new WidgetItem(symbol,price,changepers,changeabs);
-            stockHawkApp.getListItemList().add(item) ;
-        }
-
+        stockHawkApp.fillCursorWithStockData(data);
 
     }
 

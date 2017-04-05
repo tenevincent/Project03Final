@@ -2,12 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/linear"
+    android:id="@+id/relativ_widget_layout"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
      android:background="@android:color/black" >
 
         <!-- ListView to be shown on widget -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/StockSymbolTextStyleWidgetHeader"
+        android:text="@string/stock_hawk_app"
+        />
     <ListView
         android:id="@+id/listViewWidget"
         android:layout_width="match_parent"

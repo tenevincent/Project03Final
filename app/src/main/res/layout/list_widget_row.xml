@@ -1,9 +1,68 @@
 
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativ_widget_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingLeft="4dp"
+    android:paddingStart="2dp"
+    android:paddingRight="2dp"
+    android:layout_marginBottom="2dp"
+    android:paddingEnd="16dp">
+
+    <TextView
+        android:id="@+id/symbol_widget"
+        style="@style/StockSymbolTextStyleWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:gravity="start|center_vertical"
+        tools:text="@string/str_google_text" />
+
+
+    <TextView
+        android:id="@+id/price_widget"
+        style="@style/BidPriceTextStyleWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2sp"
+        android:layout_marginRight="2sp"
+        android:layout_toLeftOf="@+id/change_widget"
+        android:layout_centerHorizontal="true"
+        tools:text="@string/str_text_price" />
+
+
+
+    <TextView
+        android:id="@+id/change_widget"
+        style="@style/PercentChangeTextStyleWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/percent_change_pill_green"
+        android:paddingLeft="1dp"
+        android:paddingStart="1dp"
+        android:layout_alignParentEnd="true"
+
+        android:layout_marginLeft="10dp"
+        android:paddingRight="1dp"
+        android:paddingEnd="1dp"
+        tools:text="100%" />
+
+
+
+
+
+
+</RelativeLayout>
+<!--
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linear"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:paddingLeft="2dp"
@@ -13,6 +72,9 @@
 
 
     <LinearLayout
+        android:paddingLeft="4dp"
+        android:paddingStart="4dp"
+        android:paddingRight="4dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -27,8 +89,9 @@
             tools:text="@string/str_google_text" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_weight="1"
             android:gravity="end">
 
@@ -37,8 +100,8 @@
                 style="@style/BidPriceTextStyleWidget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="2sp"
                 android:layout_marginEnd="2sp"
+                android:layout_marginRight="2sp"
                 tools:text="@string/str_text_price" />
 
             <TextView
@@ -76,7 +139,7 @@
 
 </LinearLayout>
 
-
+    -->
 <!--
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

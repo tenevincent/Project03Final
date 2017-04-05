@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class StockDetailsOverTimeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class StockDetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final int TASK_LOADER_ID = 20 ;
     private  String mCurrentSymbolKey = null;
@@ -143,6 +143,9 @@ public class StockDetailsOverTimeActivity extends AppCompatActivity implements L
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+      //  if(null == data)
+       //     return;
 
         while (data.moveToNext()) {
 

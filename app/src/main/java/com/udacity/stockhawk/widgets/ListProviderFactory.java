@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
 import com.udacity.stockhawk.R;
+import com.udacity.stockhawk.StockAppWidgetProvider;
 import com.udacity.stockhawk.StockHawkApp;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.StockData;
@@ -27,6 +29,7 @@ public class ListProviderFactory implements RemoteViewsFactory {
     private ArrayList<WidgetItem> listItemList = new ArrayList<WidgetItem>();
     private Context context = null;
     private int appWidgetId;
+    public static final String ACTION_EXTRA_ITEM = "ACTION_EXTRA_ITEM_KEY";
 
   //   private Cursor mcursor;
 
@@ -70,20 +73,21 @@ public class ListProviderFactory implements RemoteViewsFactory {
     @Override
     public RemoteViews getViewAt(int position) {
 
-           final RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.list_widget_row);
+
+
+        final RemoteViews remoteView =
+                new RemoteViews(context.getPackageName(), R.layout.list_widget_row);
+
 
         WidgetItem listItem = listItemList.get(position);
 
-
         remoteView.setTextViewText(R.id.symbol_widget,listItem.getSymbol());
         remoteView.setTextColor(R.id.price_widget, Color.WHITE);
-
         remoteView.setTextViewText(R.id.price_widget, listItem.getPrice());
         remoteView.setTextColor(R.id.price_widget, Color.WHITE);
-
         remoteView.setTextViewText(R.id.change_widget, listItem.getChangePercentage());
 
-        
+
         float rawAbsoluteChange = Float.parseFloat(listItem.getChangeAbsolute());
 
         if (rawAbsoluteChange > 0) {
@@ -92,10 +96,29 @@ public class ListProviderFactory implements RemoteViewsFactory {
             remoteView.setTextColor(R.id.change_widget, Color.RED);
         }
 
-        //  float percentageChange = cursor.getFloat(Contract.Quote.POSITION_PERCENTAGE_CHANGE);
 
+
+
+        Bundle extras = new Bundle();
+        extras.putInt(ACTION_EXTRA_ITEM, position);
+        String data= listItem.getSymbol();
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtra("homescreen_meeting",data);
+        fillInIntent.putExtras(extras);
+
+
+        // Make it possible to distinguish the individual on-click
+        // action of a given item
+        remoteView.setOnClickFillInIntent(R.layout.list_widget_row, fillInIntent);
+
+
+
+
+        //  float percentageChange = cursor.getFloat(Contract.Quote.POSITION_PERCENTAGE_CHANGE);
         return remoteView;
     }
+
+
 
 
     @Override

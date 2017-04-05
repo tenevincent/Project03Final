@@ -1,30 +1,29 @@
 package com.udacity.stockhawk;
 
+import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.udacity.stockhawk.data.Contract;
-import com.udacity.stockhawk.data.WidgetItem;
 import com.udacity.stockhawk.ui.MainActivity;
+import com.udacity.stockhawk.ui.StockDetailsActivity;
 import com.udacity.stockhawk.widgets.StockAppWidgetService;
 
 /**
  * Implementation of App Widget functionality.
  */
-public class StockAppWidgetProvider extends AppWidgetProvider implements LoaderManager.LoaderCallbacks<Cursor> {
+public class StockAppWidgetProvider extends AppWidgetProvider {
 
     private static final int TASK_LOADER_ID = 20;
     private  Context currentContext;
+
 
 
     @Override
@@ -35,7 +34,9 @@ public class StockAppWidgetProvider extends AppWidgetProvider implements LoaderM
         StockHawkApp stockHawkApp = (StockHawkApp)currentContext.getApplicationContext() ;
 
 
-        // activity.getFragmentManager().getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
+        // https://github.com/udacity/Advanced_Android_Development/blob/master/app/src/main/java/com/example/android/sunshine/app/widget/DetailWidgetRemoteViewsService.java
+
+
 
 
         final int N = appWidgetIds.length;
@@ -45,66 +46,59 @@ public class StockAppWidgetProvider extends AppWidgetProvider implements LoaderM
 		 * meaning you are placing more than one widgets on your homescreen*/
 
         for (int i = 0; i < N; ++i) {
+
             RemoteViews remoteViews = updateWidgetListView(context, appWidgetIds[i]);
             appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
+
+            // Set up the collection
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                setRemoteAdapter(context, remoteViews,appWidgetIds[i]);
+            } else {
+                setRemoteAdapterV11(context, remoteViews);
+            }
+
         }
 
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private void setRemoteAdapter(Context context, @NonNull final RemoteViews views, int appWidgetId) {
+        Intent adapter = new Intent(context, StockAppWidgetService.class);
+        adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        adapter.setData(Uri.parse(adapter.toUri(Intent.URI_INTENT_SCHEME)));
+        views.setRemoteAdapter(R.id.listViewWidget, adapter);
+
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setRemoteAdapterV11(Context context, @NonNull final RemoteViews views) {
+        views.setRemoteAdapter(0, R.id.listViewWidget,
+                new Intent(context, StockAppWidgetService.class));
+    }
+
+
     private RemoteViews updateWidgetListView(Context context, int appWidgetId) {
 
 
         //which layout to show on widget
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.stock_widget_layout);
 
+
         Intent openIntent = new Intent(context,MainActivity.class);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,openIntent,0);
 
-        remoteViews.setOnClickPendingIntent(R.id.linear,pendingIntent);
-
+        remoteViews.setOnClickPendingIntent(R.id.relativ_widget_layout,pendingIntent);
 
         Intent intent = new Intent(context, StockAppWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
         remoteViews.setRemoteAdapter( R.id.listViewWidget, intent);
+        remoteViews.setPendingIntentTemplate(R.id.listViewWidget, pendingIntent);
 
-
-
-        // remoteViews.setRemoteAdapter(appWidgetId, R.id.listViewWidget, intent);
-
-
-
-
-
-
-        /*
-        //RemoteViews Service needed to provide adapter for ListView
-        Intent svcIntent = new Intent(context, StockAppWidgetService.class);
-        //passing app widget id to that RemoteViews Service
-        svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        //setting a unique Uri to the intent
-        //don't know its purpose to me right now
-        svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
-
-        //setting adapter to RecyclerView of the widget
-        remoteViews.setRemoteAdapter(appWidgetId, R.id.listViewWidget, svcIntent);
-
-
-
-        // remoteViews.setRemoteAdapter( R.id.listViewWidget, svcIntent);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, svcIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setOnClickPendingIntent(R.id.listViewWidget, pendingIntent);
-
-
-        //setting an empty view in case of no data
-         remoteViews.setEmptyView(R.id.listViewWidget, R.id.empty_view);
-
-        */
         return remoteViews;
-
     }
 
 
@@ -115,6 +109,13 @@ public class StockAppWidgetProvider extends AppWidgetProvider implements LoaderM
         String action = intent.getAction();
         String actionName = "use_custom_class";
 
+        Log.d("message_tag",action.toString()) ;
+
+
+
+     //   Toast.makeText(context, "Touched view " + viewIndex, Toast.LENGTH_SHORT).show();
+
+
         if (actionName.equals(action)) {
           //  MyClass mc = new MyClass(context);
           //  mc.toggleEnable();
@@ -122,6 +123,9 @@ public class StockAppWidgetProvider extends AppWidgetProvider implements LoaderM
 
 
     }
+
+
+    /*
 
     @Override
     public void onEnabled(Context context) {
@@ -177,6 +181,7 @@ public class StockAppWidgetProvider extends AppWidgetProvider implements LoaderM
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         StockHawkApp stockHawkApp = (StockHawkApp)currentContext.getApplicationContext() ;
 
+
         while (data.moveToNext()) {
             String symbol = data.getString(Contract.Quote.POSITION_SYMBOL) ;
             String price = data.getString(Contract.Quote.POSITION_PRICE) ;
@@ -187,11 +192,13 @@ public class StockAppWidgetProvider extends AppWidgetProvider implements LoaderM
         }
 
 
+
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+    */
 }
 

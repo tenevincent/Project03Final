@@ -39,11 +39,10 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
-            android:name=".ui.StockDetailsOverTimeActivity"
+            android:name=".ui.StockDetailsActivity"
             android:parentActivityName=".ui.MainActivity">
             <intent-filter>
-                <action android:name="com.udacity.stockhawk.ui.StockDetailsOverTimeActivity" />
-
+                <action android:name="com.udacity.stockhawk.ui.StockDetailsActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
