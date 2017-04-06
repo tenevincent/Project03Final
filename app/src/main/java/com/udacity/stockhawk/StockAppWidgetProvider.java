@@ -34,34 +34,21 @@ public class StockAppWidgetProvider extends AppWidgetProvider {
         StockHawkApp stockHawkApp = (StockHawkApp)currentContext.getApplicationContext() ;
 
 
-        // https://github.com/udacity/Advanced_Android_Development/blob/master/app/src/main/java/com/example/android/sunshine/app/widget/DetailWidgetRemoteViewsService.java
-
-
-
-
         final int N = appWidgetIds.length;
 
 		/*int[] appWidgetIds holds ids of multiple instance of your widget
 
 		 * meaning you are placing more than one widgets on your homescreen*/
-
         for (int i = 0; i < N; ++i) {
-
             RemoteViews remoteViews = updateWidgetListView(context, appWidgetIds[i]);
             appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
-
-            // Set up the collection
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                setRemoteAdapter(context, remoteViews,appWidgetIds[i]);
-            } else {
-                setRemoteAdapterV11(context, remoteViews);
-            }
-
         }
 
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
+
+    /*
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void setRemoteAdapter(Context context, @NonNull final RemoteViews views, int appWidgetId) {
         Intent adapter = new Intent(context, StockAppWidgetService.class);
@@ -76,6 +63,8 @@ public class StockAppWidgetProvider extends AppWidgetProvider {
         views.setRemoteAdapter(0, R.id.listViewWidget,
                 new Intent(context, StockAppWidgetService.class));
     }
+
+    */
 
 
     private RemoteViews updateWidgetListView(Context context, int appWidgetId) {

@@ -54,11 +54,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Timber.d(getString(R.string.str_symbol_clicked), symbol);
 
+        startStockDetailsActivity(symbol);
+    }
+
+
+
+    private void startStockDetailsActivity(String symbol) {
         Intent intent = new Intent("com.udacity.stockhawk.ui.StockDetailsActivity");
         Bundle mBundle = new Bundle();
         mBundle.putString(MainActivity.SYMBOL_KEYWORD, symbol);
         intent.putExtras(mBundle);
-
         startActivity(intent);
     }
 
@@ -162,10 +167,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         adapter.setCursor(data);
         //
         fillWidgetItems(data);
-
-
         StockHawkApp stockHawkApp = (StockHawkApp)this.getApplicationContext() ;
         stockHawkApp.fillCursorWithStockData(data);
+
+
+        String keyWord = getString(R.string.str_stock_keyword);
+        Bundle extras = getIntent().getExtras();
+        String symbol = null;
+        if (extras != null) {
+            symbol = extras.getString(keyWord,null);
+            if(null != symbol){
+                startStockDetailsActivity(symbol);
+            }
+            // and get whatever type user account id is
+        }
 
     }
 
