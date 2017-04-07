@@ -17,7 +17,7 @@
     <string name="default_stocks_facebook" translatable="false">FB</string>
 
 
-    <string name="action_change_units">@string/pref_display_mode_key</string>
+    <string name="action_change_units" translatable="false">@string/pref_display_mode_key</string>
 
 
     <string name="dialog_title" translatable="true">Add Stock</string>
@@ -47,11 +47,11 @@
     <string name="str_text_price" translatable="false">1000.00</string>
     <string name="stock_dialog_fragment" translatable="false">StockDialogFragment</string>
     <string name="str_datetime_format" translatable="false">dd/MM/yyyy</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="empty_string">empty string</string>
-    <string name="stock_hawk_app">Stock Hawk</string>
-    <string name="str_stock_keyword">selected_symbol</string>
-    <string name="res_change_widget">100%</string>
+    <string name="appwidget_text" translatable="true">EXAMPLE</string>
+    <string name="add_widget" translatable="true">Add widget</string>
+    <string name="empty_string" translatable="true">empty string</string>
+    <string name="stock_hawk_app" translatable="true">Stock Hawk</string>
+    <string name="str_stock_keyword" translatable="true">selected_symbol</string>
+    <string name="res_change_widget" translatable="false">100%</string>
 
 </resources>
