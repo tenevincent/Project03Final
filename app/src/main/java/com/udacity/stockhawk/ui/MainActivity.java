@@ -26,6 +26,7 @@ import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 import com.udacity.stockhawk.data.WidgetItem;
 import com.udacity.stockhawk.sync.QuoteSyncJob;
+import com.udacity.stockhawk.widgets.StockAppWidgetService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 String symbol = adapter.getSymbolAtPosition(viewHolder.getAdapterPosition());
                 PrefUtils.removeStock(MainActivity.this, symbol);
                 getContentResolver().delete(Contract.Quote.makeUriForStock(symbol), null, null);
+
+                startStockDetailsService();
             }
         }).attachToRecyclerView(stockRecyclerView);
 
@@ -127,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             error.setVisibility(View.VISIBLE);
         } else {
             error.setVisibility(View.GONE);
+
+            startStockDetailsService();
         }
     }
 
@@ -136,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     void addStock(String symbol) {
         if (symbol != null && !symbol.isEmpty()) {
-
             if (networkUp()) {
                 swipeRefreshLayout.setRefreshing(true);
             } else {
@@ -146,7 +150,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             PrefUtils.addStock(this, symbol);
             QuoteSyncJob.syncImmediately(this);
+
+            startStockDetailsService();
+
+
         }
+    }
+
+    private void startStockDetailsService() {
+        Intent service = new Intent(this,StockAppWidgetService.class);
+        startService(service) ;
     }
 
     @Override
@@ -158,17 +171,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         swipeRefreshLayout.setRefreshing(false);
 
-        if (data.getCount() != 0) {
+        if (cursor.getCount() != 0) {
             error.setVisibility(View.GONE);
         }
-        adapter.setCursor(data);
+        adapter.setCursor(cursor);
         //
-        fillWidgetItems(data);
+        fillWidgetItems(cursor);
         StockHawkApp stockHawkApp = (StockHawkApp)this.getApplicationContext() ;
-        stockHawkApp.fillCursorWithStockData(data);
+        stockHawkApp.fillCursorWithStockData(cursor);
 
 
         String keyWord = getString(R.string.str_stock_keyword);
@@ -181,7 +194,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
             // and get whatever type user account id is
         }
-
     }
 
 

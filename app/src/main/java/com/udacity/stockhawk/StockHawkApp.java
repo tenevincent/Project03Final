@@ -32,17 +32,17 @@ public class StockHawkApp extends Application {
         }
     }
 
-    public void fillCursorWithStockData(Cursor data) {
-        if(null == data)
+    public void fillCursorWithStockData(Cursor cursor) {
+        if(null == cursor)
             return;
 
         this.getListItemList().clear();
 
-        while (data.moveToNext()) {
-            String symbol = data.getString(Contract.Quote.POSITION_SYMBOL) ;
-            String price = data.getString(Contract.Quote.POSITION_PRICE) ;
-            String changepers = data.getString(Contract.Quote.POSITION_PERCENTAGE_CHANGE) ;
-            String changeabs = data.getString(Contract.Quote.POSITION_ABSOLUTE_CHANGE) ;
+        while (cursor.moveToNext()) {
+            String symbol = cursor.getString(Contract.Quote.POSITION_SYMBOL) ;
+            String price = cursor.getString(Contract.Quote.POSITION_PRICE) ;
+            String changepers = cursor.getString(Contract.Quote.POSITION_PERCENTAGE_CHANGE) ;
+            String changeabs = cursor.getString(Contract.Quote.POSITION_ABSOLUTE_CHANGE) ;
             WidgetItem item = new WidgetItem(symbol,price,changepers,changeabs);
             this.getListItemList().add(item) ;
         }

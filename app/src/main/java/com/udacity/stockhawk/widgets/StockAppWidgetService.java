@@ -1,9 +1,13 @@
 package com.udacity.stockhawk.widgets;
 
 import android.annotation.TargetApi;
+import android.app.Service;
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
+import android.support.annotation.IntDef;
+import android.util.Log;
 import android.widget.RemoteViewsService;
 
 import com.udacity.stockhawk.StockHawkApp;
@@ -16,134 +20,71 @@ import java.util.ArrayList;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class StockAppWidgetService extends RemoteViewsService {
 
-    private Cursor data = null;
+    private Cursor cursor = null;
     private ArrayList<WidgetItem> listItemList = new ArrayList<WidgetItem>();
 
 
     public StockAppWidgetService() {
-
+        Log.e("dataset2", "StockAppWidgetService(1)");
     }
 
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        Log.e("dataset3", "onGetViewFactory(2)");
 
-        try {
-            data =  this.getContentResolver().query(Contract.Quote.URI,
-                    null,
-                    null,
-                    null,
-                    null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+         if (fetchDataFromContentResolver())
+             return (new ListProviderFactory(StockAppWidgetService.this, intent));
 
 
-        StockHawkApp stockHawkApp = (StockHawkApp)this.getApplicationContext() ;
+        return (new ListProviderFactory(this.getApplicationContext(), intent));
+    }
 
-        if(null == data){
-            return (new ListProviderFactory(StockAppWidgetService.this, intent));
-        }
-        stockHawkApp.fillCursorWithStockData(data);
-        listItemList = stockHawkApp.getListItemList();
+    private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-
-        /*
-        return new RemoteViewsFactory() {
-            @Override
-            public void onCreate() {
-                if (data != null) {
-                    data.close();
-                }
-            }
-
-            @Override
-            public void onDataSetChanged() {
-
-            }
-
-            @Override
-            public void onDestroy() {
-                if (data != null) {
-                    data.close();
-                    data = null;
-                }
-            }
-
-            @Override
-            public int getCount() {
-                return data == null ? 0 : data.getCount();
-            }
-
-            @Override
-            public RemoteViews getViewAt(int position) {
-                if (position == AdapterView.INVALID_POSITION ||
-                        data == null || !data.moveToPosition(position)) {
-                    return null;
-                }
-
-                RemoteViews view = new RemoteViews(getPackageName(),
-                        R.layout.list_widget_row);
-
-                WidgetItem listItem = listItemList.get(position);
-
-                view.setTextViewText(R.id.symbol_widget,listItem.getSymbol());
-                view.setTextColor(R.id.price_widget, Color.WHITE);
-                view.setTextViewText(R.id.price_widget, listItem.getPrice());
-                view.setTextColor(R.id.price_widget, Color.WHITE);
-                view.setTextViewText(R.id.change_widget, listItem.getChangePercentage());
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
 
-                Bundle extras = new Bundle();
-                extras.putInt(ListProviderFactory.ACTION_EXTRA_ITEM, position);
-                String data= listItem.getSymbol();
-                Intent fillInIntent = new Intent();
-                fillInIntent.putExtra("homescreen_meeting2",data);
-                fillInIntent.putExtras(extras);
-                // Make it possible to distinguish the individual on-click
-                // action of a given item
-                view.setOnClickFillInIntent(R.layout.list_widget_row, fillInIntent);
-
-                return  view;
-
-            }
-
-            @Override
-            public RemoteViews getLoadingView() {
-                return null;
-            }
-
-            @Override
-            public int getViewTypeCount() {
-                return 1;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return position;
-            }
-
-            @Override
-            public boolean hasStableIds() {
-                return true;
-            }
-
-            private Cursor data = null;
+        fetchDataFromContentResolver() ;
 
 
+        Log.e("dataset4", "onXStartCommand(1)");
 
-        };
+        Intent widgetUpdateIntent = new Intent();
+        widgetUpdateIntent.setAction(StockAppWidgetProvider.DATA_FETCHED);
+        widgetUpdateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        sendBroadcast(widgetUpdateIntent);
 
-        */
 
-
-        return (new ListProviderFactory(StockAppWidgetService.this, intent));
-
+        return super.onStartCommand(intent, flags, startId);
     }
 
 
+    private boolean fetchDataFromContentResolver() {
+        try {
+            cursor =  this.getContentResolver().query(Contract.Quote.URI,
+                    null,
+                    null,
+                    null,
+                    Contract.Quote.COLUMN_SYMBOL + " ASC");
 
 
+            StockHawkApp stockHawkApp = (StockHawkApp)this.getApplicationContext() ;
+            stockHawkApp.fillCursorWithStockData(cursor);
+            listItemList = stockHawkApp.getListItemList();
+            cursor.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            Log.e("dataset4", "onXfetchDataFromContentResolver Error (1)");
+        }
+
+
+
+        return false;
+    }
 
 
 }

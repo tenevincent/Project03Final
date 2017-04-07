@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -23,16 +24,18 @@ import com.udacity.stockhawk.widgets.StockAppWidgetService;
  */
 public class StockAppWidgetProvider extends AppWidgetProvider {
 
+    public static final String DATA_FETCHED = "com.color.appwidget.list.UPDATE_LIST";
     // private static final int TASK_LOADER_ID = 20;
     private  Context currentContext;
-
+    public static String UPDATE_LIST = "UPDATE_LIST";
 
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
-        this.currentContext = context;
+        Log.e("onReceive", "onXonUpdate(1)");
 
+        this.currentContext = context;
         StockHawkApp stockHawkApp = (StockHawkApp)currentContext.getApplicationContext() ;
         final int N = appWidgetIds.length;
 
@@ -43,6 +46,8 @@ public class StockAppWidgetProvider extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
         }
 
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listViewWidget);
+
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
@@ -50,23 +55,53 @@ public class StockAppWidgetProvider extends AppWidgetProvider {
 
     private RemoteViews updateWidgetListView(Context context, int appWidgetId) {
 
+        Log.e("onReceive", "onXupdateWidgetListView(1)");
+
+
+
         //which layout to show on widget
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.stock_widget_layout);
+        RemoteViews widget = new RemoteViews(context.getPackageName(), R.layout.stock_widget_layout);
 
-        Intent openIntent = new Intent(context,MainActivity.class);
+        Intent svcIntent = new Intent(context,MainActivity.class);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,0,openIntent,0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context,0,svcIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        remoteViews.setOnClickPendingIntent(R.id.relativ_widget_layout,pendingIntent);
+        widget.setOnClickPendingIntent(R.id.relativ_widget_layout,pendingIntent);
 
         Intent intent = new Intent(context, StockAppWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
-        remoteViews.setRemoteAdapter( R.id.listViewWidget, intent);
-        remoteViews.setPendingIntentTemplate(R.id.listViewWidget, pendingIntent);
 
-        return remoteViews;
+        // Intent serviceIntent = new Intent(context, StockAppWidgetService.class);
+        // serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+
+
+
+        // widget.setRemoteAdapter(appWidgetId, R.id.listViewWidget, svcIntent);
+
+          widget.setRemoteAdapter( R.id.listViewWidget, intent);
+        widget.setPendingIntentTemplate(R.id.listViewWidget, pendingIntent);
+
+
+
+        // TODO for notififying the listview item changed
+        intent = new Intent(context, StockAppWidgetProvider.class);
+        intent.setAction(UPDATE_LIST);
+        PendingIntent pendingIntentRefresh = PendingIntent.getBroadcast(context,0, intent, 0);
+         widget.setOnClickPendingIntent(R.id.symbol_widget, pendingIntentRefresh);
+
+
+        /*
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                new ComponentName(context, MainActivity.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listViewWidget);
+        */
+
+        context.startService(intent);
+
+        return widget;
     }
 
 
@@ -74,17 +109,18 @@ public class StockAppWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        /*
-        String action = intent.getAction();
-        String actionName = "use_custom_class";
-        Log.d("message_tag",action.toString()) ;
-        if (actionName.equals(action)) {
-          //  MyClass mc = new MyClass(context);
-          //  mc.toggleEnable();
-        }
-        */
-
+        // TODO implement update
+        Log.e("onReceive", "onXReceive(1)");
+        updateWidget(context);
     }
+
+
+    private void updateWidget(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(context, StockAppWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listViewWidget);
+    }
+
 
 
 

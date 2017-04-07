@@ -59,6 +59,7 @@
         <receiver android:name=".widgets.StockAppWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.color.appwidget.list.UPDATE_LIST" />
             </intent-filter>
 
             <meta-data
