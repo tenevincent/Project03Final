@@ -10,19 +10,36 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">@dimen/size_dim_03dp</item>
+        <item name="android:paddingStart">@dimen/size_dim_03dp</item>
+        <item name="android:paddingRight">@dimen/size_dim_03dp</item>
+        <item name="android:paddingEnd">@dimen/size_dim_03dp</item>
     </style>
+
 
     <style name="PercentChangeTextStyleWidget">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:textStyle">bold</item>
+
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:paddingRight">1dp</item>
+        <item name="android:paddingEnd">1dp</item>
+        <item name="android:paddingLeft">1dp</item>
+        <item name="android:paddingStart">1dp</item>
     </style>
 
     <style name="BidPriceTextStyle">
         <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginEnd">10sp</item>
     </style>
+
     <style name="BidPriceTextStyleWidget">
         <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginEnd">2sp</item>
+        <item name="android:layout_marginRight">2sp</item>
     </style>
 
     <style name="StockSymbolTextStyle">
@@ -35,6 +52,8 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#FFF</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginStart">4dp</item>
     </style>
 
 
@@ -46,5 +65,76 @@
     </style>
 
 
+    <style name="styleTextEmptyView">
+        <item name="android:textSize">@dimen/text_size_empty_view</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+
+
+    <style name="imageViewStyleWidget">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:scaleType">fitXY</item>
+
+        <item name="android:paddingLeft">@dimen/size_dim_04dp</item>
+        <item name="android:paddingStart">@dimen/size_dim_04dp</item>
+
+        <item name="android:layout_marginLeft">@dimen/size_dim_04dp</item>
+        <item name="android:layout_marginStart">@dimen/size_dim_04dp</item>
+
+        <item name="android:layout_marginRight">@dimen/size_dim_04dp</item>
+        <item name="android:layout_marginEnd">@dimen/size_dim_04dp</item>
+
+
+
+        <item name="android:paddingRight">@dimen/size_dim_1dp</item>
+        <item name="android:paddingEnd">@dimen/size_dim_1dp</item>
+
+        <item name="android:paddingBottom">@dimen/size_dim_1dp</item>
+        <item name="android:paddingTop">@dimen/size_dim_1dp</item>
+        <item name="android:background">#FFF</item>
+    </style>
+
+    <style name="imageViewStockUpDown">
+        <item name="android:layout_marginLeft">@dimen/size_dim_6dp</item>
+        <item name="android:layout_marginStart">@dimen/size_dim_6dp</item>
+        <item name="android:layout_height">@dimen/size_dim_16dp</item>
+        <item name="android:layout_width">@dimen/size_dim_16dp</item>
+    </style>
+
+
+    <style name="styleLinearLayoutQuote1">
+        <item name="android:paddingLeft">@dimen/size_dim_16dp</item>
+        <item name="android:paddingStart">@dimen/size_dim_16dp</item>
+        <item name="android:paddingRight">@dimen/size_dim_16dp</item>
+        <item name="android:paddingEnd">@dimen/size_dim_16dp</item>
+    </style>
+
+
+    <style name="styleLinearLayoutQuot02">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+
+    <style name="imageViewItemQuote">
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingStart">5dp</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:paddingEnd">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:background">#fff</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <style name="StyleEditdialogStock">
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">@dimen/size_dim_04dp</item>
+        <item name="android:layout_marginStart">@dimen/size_dim_04dp</item>
+        <item name="android:layout_marginRight">@dimen/size_dim_04dp</item>
+        <item name="android:layout_marginEnd">@dimen/size_dim_04dp</item>
+        <item name="android:layout_marginTop">@dimen/size_dim_16dp</item>
+    </style>
 
 </resources>

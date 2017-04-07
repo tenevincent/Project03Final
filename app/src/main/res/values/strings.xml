@@ -52,5 +52,6 @@
     <string name="empty_string">empty string</string>
     <string name="stock_hawk_app">Stock Hawk</string>
     <string name="str_stock_keyword">selected_symbol</string>
+    <string name="res_change_widget">100%</string>
 
 </resources>

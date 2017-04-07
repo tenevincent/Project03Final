@@ -187,11 +187,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     private void fillWidgetItems(Cursor data) {
-
         StockHawkApp stockHawkApp = (StockHawkApp)this.getApplicationContext() ;
         stockHawkApp.fillCursorWithStockData(data);
-
-
     }
 
 

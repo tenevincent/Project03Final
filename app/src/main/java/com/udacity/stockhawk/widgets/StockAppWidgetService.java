@@ -3,18 +3,12 @@ package com.udacity.stockhawk.widgets;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
-import android.widget.AdapterView;
-import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.StockHawkApp;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.WidgetItem;
-import com.udacity.stockhawk.ui.StockLoderCallbackAsync;
 
 import java.util.ArrayList;
 
@@ -27,9 +21,8 @@ public class StockAppWidgetService extends RemoteViewsService {
 
 
     public StockAppWidgetService() {
+
     }
-
-
 
 
     @Override

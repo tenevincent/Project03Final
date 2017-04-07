@@ -17,9 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingStart="16dp"
+            android:paddingStart="@dimen/view_padding"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingEnd="16dp"
+            android:paddingEnd="@dimen/view_padding"
             />
 
     </android.support.v4.widget.SwipeRefreshLayout>
@@ -29,15 +29,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/view_padding"
         android:onClick="button"
         android:src="@drawable/fab_plus"
         app:backgroundTint="@color/material_blue_500"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
+        app:borderWidth="@dimen/border_width_floating_btn"
+        app:elevation="@dimen/view_padding"
         app:fabSize="normal"
         android:contentDescription="@string/add_stock"
-        app:pressedTranslationZ="12dp" />
+        app:pressedTranslationZ="@dimen/size_dim_12dp" />
 
     <TextView
         android:id="@+id/error"
