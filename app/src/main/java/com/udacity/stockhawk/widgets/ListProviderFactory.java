@@ -44,27 +44,8 @@ public class ListProviderFactory implements RemoteViewsService.RemoteViewsFactor
         this.context = context;
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
-
         StockHawkApp stockHawkApp = (StockHawkApp)context.getApplicationContext() ;
         this.listItemList = stockHawkApp.getListItemList();
-
-        Log.e("onReceive", "onXListProviderFactory(1): " + this.listItemList.size() + " items");
-
-
-        /*
-        try {
-            cursor = context.getContentResolver().query(Contract.Quote.URI,
-                    null,
-                    null,
-                    null,
-                    null);
-            stockHawkApp.fillCursorWithStockData(cursor);
-            this.listItemList = stockHawkApp.getListItemList();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        */
-
 
     }
 
@@ -79,8 +60,20 @@ public class ListProviderFactory implements RemoteViewsService.RemoteViewsFactor
     @Override
     public RemoteViews getViewAt(int position) {
 
-
         final RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.list_widget_row);
+try {
+    createRemoteViews(position, view);
+}catch (Exception ex){
+
+}
+
+        return view;
+    }
+
+    private void createRemoteViews(int position, RemoteViews view) {
+
+        StockHawkApp stockHawkApp = (StockHawkApp)context.getApplicationContext() ;
+        this.listItemList = stockHawkApp.getListItemList();
 
         WidgetItem item = listItemList.get(position);
         view.setTextViewText(R.id.symbol_widget,item.getSymbol());
@@ -104,7 +97,7 @@ public class ListProviderFactory implements RemoteViewsService.RemoteViewsFactor
 
 
         Bundle extras = new Bundle();
-       // extras.putInt(ACTION_EXTRA_ITEM, position);
+        // extras.putInt(ACTION_EXTRA_ITEM, position);
         String data= item.getSymbol();
         Intent intent = new Intent(context,StockDetailsActivity.class);
         intent.putExtra(context.getString(R.string.str_stock_keyword),data);
@@ -116,24 +109,7 @@ public class ListProviderFactory implements RemoteViewsService.RemoteViewsFactor
         view.setOnClickFillInIntent(R.id.symbol_widget, intent);
         view.setOnClickFillInIntent(R.id.textview_placeholder, intent);
         view.setOnClickFillInIntent(R.id.imageview_widget_stock_updown, intent);
-
-
-        Log.e("onReceive", "onXgetViewAt(1)");
-
-
-        /*
-        // create a pending activity and associated a previously created intent
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
-        view.setOnClickPendingIntent(R.id.price_widget,pendingIntent);
-        view.setOnClickPendingIntent(R.id.change_widget,pendingIntent);
-        view.setOnClickPendingIntent(R.id.symbol_widget,pendingIntent);
-        view.setOnClickPendingIntent(R.id.textview_placeholder,pendingIntent);
-        view.setOnClickPendingIntent(R.id.imageview_widget,pendingIntent);
-*/
-        return view;
     }
-
-
 
 
     @Override
@@ -153,14 +129,36 @@ public class ListProviderFactory implements RemoteViewsService.RemoteViewsFactor
         }
 
 
-        Log.e("dataset", "onXDataSetChanged(1)");
+
 
 
         try {
 
-
             StockHawkApp stockHawkApp = (StockHawkApp)context.getApplicationContext() ;
+        try {
+
+            /*
+            cursor = context.getContentResolver().query(Contract.Quote.URI,
+                    null,
+                    null,
+                    null,
+                    null);
+            stockHawkApp.fillCursorWithStockData(cursor);
+            */
             this.listItemList = stockHawkApp.getListItemList();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+
+           //  StockHawkApp stockHawkApp = (StockHawkApp)context.getApplicationContext() ;
+           // this.listItemList = stockHawkApp.getListItemList();
+            // this.listItemList = stockHawkApp.getListItemList();
+
+            // Log.e("dataset", "onXDataSetChanged(1)" + this.listItemList.size() + " NEW ITEMS");
+
+        //    this.listItemList = stockHawkApp.getListItemList();
 
             /*
             cursor = context.getContentResolver().query(Contract.Quote.URI,

@@ -25,13 +25,12 @@ public class StockAppWidgetService extends RemoteViewsService {
 
 
     public StockAppWidgetService() {
-        Log.e("dataset2", "StockAppWidgetService(1)");
+        //Log.e("dataset2", "StockAppWidgetService(1)");
     }
 
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        Log.e("dataset3", "onGetViewFactory(2)");
 
          if (fetchDataFromContentResolver())
              return (new ListProviderFactory(StockAppWidgetService.this, intent));
@@ -45,23 +44,17 @@ public class StockAppWidgetService extends RemoteViewsService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-
-        fetchDataFromContentResolver() ;
-
-
-        Log.e("dataset4", "onXStartCommand(1)");
-
         Intent widgetUpdateIntent = new Intent();
         widgetUpdateIntent.setAction(StockAppWidgetProvider.DATA_FETCHED);
         widgetUpdateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         sendBroadcast(widgetUpdateIntent);
-
 
         return super.onStartCommand(intent, flags, startId);
     }
 
 
     private boolean fetchDataFromContentResolver() {
+
         try {
             cursor =  this.getContentResolver().query(Contract.Quote.URI,
                     null,
@@ -77,8 +70,6 @@ public class StockAppWidgetService extends RemoteViewsService {
 
         } catch (Exception e) {
             e.printStackTrace();
-
-            Log.e("dataset4", "onXfetchDataFromContentResolver Error (1)");
         }
 
 

@@ -33,7 +33,7 @@ public class StockAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
-        Log.e("onReceive", "onXonUpdate(1)");
+       //  Log.e("onReceive", "onXonUpdate(1)");
 
         this.currentContext = context;
         StockHawkApp stockHawkApp = (StockHawkApp)currentContext.getApplicationContext() ;
@@ -55,10 +55,6 @@ public class StockAppWidgetProvider extends AppWidgetProvider {
 
     private RemoteViews updateWidgetListView(Context context, int appWidgetId) {
 
-        Log.e("onReceive", "onXupdateWidgetListView(1)");
-
-
-
         //which layout to show on widget
         RemoteViews widget = new RemoteViews(context.getPackageName(), R.layout.stock_widget_layout);
 
@@ -72,32 +68,17 @@ public class StockAppWidgetProvider extends AppWidgetProvider {
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
-
-        // Intent serviceIntent = new Intent(context, StockAppWidgetService.class);
-        // serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-
-
-
         // widget.setRemoteAdapter(appWidgetId, R.id.listViewWidget, svcIntent);
-
-          widget.setRemoteAdapter( R.id.listViewWidget, intent);
+        widget.setRemoteAdapter( R.id.listViewWidget, intent);
         widget.setPendingIntentTemplate(R.id.listViewWidget, pendingIntent);
 
 
 
-        // TODO for notififying the listview item changed
+        //  for notififying the listview item changed
         intent = new Intent(context, StockAppWidgetProvider.class);
         intent.setAction(UPDATE_LIST);
         PendingIntent pendingIntentRefresh = PendingIntent.getBroadcast(context,0, intent, 0);
-         widget.setOnClickPendingIntent(R.id.symbol_widget, pendingIntentRefresh);
-
-
-        /*
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
-                new ComponentName(context, MainActivity.class));
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listViewWidget);
-        */
+        widget.setOnClickPendingIntent(R.id.symbol_widget, pendingIntentRefresh);
 
         context.startService(intent);
 
@@ -109,8 +90,8 @@ public class StockAppWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        // TODO implement update
-        Log.e("onReceive", "onXReceive(1)");
+        // implement update
+        // Log.e("onReceive", "onXReceive(1)");
         updateWidget(context);
     }
 

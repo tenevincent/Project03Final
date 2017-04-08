@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,8 +37,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         SwipeRefreshLayout.OnRefreshListener,
         StockAdapter.StockAdapterOnClickHandler {
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        stockLoaderCallbackAsync = new StockLoderCallbackAsync(this);
+        getSupportLoaderManager().initLoader(TASK_LOADER_STOCK_ID , null, stockLoaderCallbackAsync);
+
+
+    }
+
     private static final int STOCK_LOADER = 0;
     public static final String SYMBOL_KEYWORD = "symbolKeyWord";
+    private static final int TASK_LOADER_STOCK_ID = 21;
+
+    private StockLoderCallbackAsync stockLoaderCallbackAsync;
 
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.recycler_view)
@@ -98,9 +112,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 PrefUtils.removeStock(MainActivity.this, symbol);
                 getContentResolver().delete(Contract.Quote.makeUriForStock(symbol), null, null);
 
-                startStockDetailsService();
+                  startStockDetailsService();
             }
         }).attachToRecyclerView(stockRecyclerView);
+
 
 
     }
@@ -110,6 +125,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
     }
 
     @Override
@@ -130,8 +153,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             error.setVisibility(View.VISIBLE);
         } else {
             error.setVisibility(View.GONE);
-
             startStockDetailsService();
+            Log.e("dataset", "onXstartStockDetailsService(DELETE)" );
+
         }
     }
 
@@ -151,15 +175,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             PrefUtils.addStock(this, symbol);
             QuoteSyncJob.syncImmediately(this);
 
-            startStockDetailsService();
-
-
         }
     }
 
     private void startStockDetailsService() {
-        Intent service = new Intent(this,StockAppWidgetService.class);
-        startService(service) ;
+        // Intent service = new Intent(this,StockAppWidgetService.class);
+       // startService(service) ;
+        try{
+            getSupportLoaderManager().restartLoader(TASK_LOADER_STOCK_ID, null, stockLoaderCallbackAsync);
+        }catch (Exception ex){
+
+        }
+
+       //  getSupportLoaderManager().restartLoader(TASK_LOADER_STOCK_ID, null, stockLoaderCallbackAsync);
+
     }
 
     @Override
@@ -178,11 +207,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             error.setVisibility(View.GONE);
         }
         adapter.setCursor(cursor);
-        //
-        fillWidgetItems(cursor);
-        StockHawkApp stockHawkApp = (StockHawkApp)this.getApplicationContext() ;
-        stockHawkApp.fillCursorWithStockData(cursor);
-
 
         String keyWord = getString(R.string.str_stock_keyword);
         Bundle extras = getIntent().getExtras();
@@ -192,8 +216,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             if(null != symbol){
                 startStockDetailsActivity(symbol);
             }
-            // and get whatever type user account id is
         }
+
+        startStockDetailsService();
+        // Log.e("dataset", "onXstartStockDetailsService(ADD)" );
+
     }
 
 
